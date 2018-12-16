@@ -5,7 +5,7 @@
 //  Created by Zehua Chen on 12/16/18.
 //
 
-public struct Version: CustomStringConvertible {
+struct Version: CustomStringConvertible {
 
     /// Major version
     let major: Int
@@ -21,7 +21,7 @@ public struct Version: CustomStringConvertible {
     }
 }
 
-public struct About {
+struct About {
 
     /// Version number
     public static let version = Version(major: 0, minor: 0, patch: 0)
