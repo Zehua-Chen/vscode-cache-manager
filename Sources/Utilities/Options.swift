@@ -1,9 +1,16 @@
+import Foundation
+
 /// Command line options
-public enum Options: Equatable {
+public struct Options: Equatable {
+
+    public enum Action: Equatable {
+        case clean
+        case list
+    }
 
     /// A filter used to indicate what type of cache to ignore from either
     /// listing or cleaning
-    public enum Filter {
+    public enum Filter: Equatable {
         /// All cache
         case all
         /// Cache that does not exist on disks any more
@@ -15,17 +22,19 @@ public enum Options: Equatable {
     /// Global options, parsed from command line arguments
     public static let shared = Options(from: CommandLine.arguments)
 
-    /// Clean cache
-    case clean(filter: Filter)
-    /// List cache
-    case list(filter: Filter)
+    public var action: Action
+    public var filter: Filter
 
     /// Parse options from the command line
     ///
     /// - Parameter args: command line arguments
     public init(from args: [String]) {
-        // Assign default options
-        self = .clean(filter: .gone)
+
+        // TODO: Make sure argument is valid
+
+        // Assign default values
+        action = .clean
+        filter = .gone
 
         // Find subcommand, if there is one
         if args.count < 2 {
@@ -34,18 +43,23 @@ public enum Options: Equatable {
         
         switch args[1] {
         case "clean":
+            filter = .gone
+
             // If have addition arguments
             if args.count > 2 {
-                _handleClean(args: args[2...])
-            // otherwise defaults to gone
+                filter = args[2].makeFilter()
             } else {
-                self = .clean(filter: .gone)
+                filter = .gone
+
             }
         case "list":
+            action = .list
+
+            // If have addition arguments
             if args.count > 2 {
-                _handleList(args: args[2...])
+                filter = args[2].makeFilter()
             } else {
-                self = .list(filter: .all)
+                filter = .all
             }
 
         default:
@@ -53,33 +67,21 @@ public enum Options: Equatable {
         }
 
     }
+}
 
-    fileprivate mutating func _handleClean(args: ArraySlice<String>) {
+fileprivate extension String {
 
-        switch args.first! {
-        case "-gone":
-            self = .clean(filter: .gone)
+    func makeFilter() -> Options.Filter {
+
+        switch self {
         case "-all":
-            self = .clean(filter: .all)
-        case "-workspaces":
-            self = .clean(filter: .workspaces)
-        default:
-            self = .clean(filter: .gone)
-        }
-
-    }
-
-    fileprivate mutating func _handleList(args: ArraySlice<String>) {
-
-        switch args.first! {
+            return .all
         case "-gone":
-            self = .list(filter: .gone)
-        case "-all":
-            self = .list(filter: .all)
+            return .gone
         case "-workspaces":
-            self = .list(filter: .workspaces)
+            return .workspaces
         default:
-            self = .list(filter: .all)
+            return .all
         }
 
     }

@@ -3,19 +3,15 @@ import Utilities
 
 final class OptionsTest: XCTestCase {
 
-    func test() throws {
-        let args = ["vscode-cache"]
-        let option = Options(from: args)
-        XCTAssertTrue(Options.clean(filter: .gone) == option)
-    }
-
     func testCleanShort() throws {
         let args = [
             "vscode-cache",
             "clean",
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.clean(filter: .gone) == option)
+
+        XCTAssertEqual(option.action, Options.Action.clean)
+        XCTAssertEqual(option.filter, Options.Filter.gone)
     }
 
     func testCleanGone() throws {
@@ -25,7 +21,9 @@ final class OptionsTest: XCTestCase {
             "-gone"
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.clean(filter: .gone) == option)
+
+        XCTAssertEqual(option.action, Options.Action.clean)
+        XCTAssertEqual(option.filter, Options.Filter.gone)
     }
 
     func testCleanWorkspaces() throws {
@@ -35,7 +33,9 @@ final class OptionsTest: XCTestCase {
             "-workspaces"
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.clean(filter: .workspaces) == option)
+
+        XCTAssertEqual(option.action, Options.Action.clean)
+        XCTAssertEqual(option.filter, Options.Filter.workspaces)
     }
 
     func testCleanAll() throws {
@@ -45,7 +45,9 @@ final class OptionsTest: XCTestCase {
             "-all"
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.clean(filter: .all) == option)
+
+        XCTAssertEqual(option.action, Options.Action.clean)
+        XCTAssertEqual(option.filter, Options.Filter.all)
     }
 
     func testListShort() throws {
@@ -54,7 +56,9 @@ final class OptionsTest: XCTestCase {
             "list",
             ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.list(filter: .all) == option)
+
+        XCTAssertEqual(option.action, Options.Action.list)
+        XCTAssertEqual(option.filter, Options.Filter.all)
     }
 
     func testListWorkspaces() throws {
@@ -64,7 +68,9 @@ final class OptionsTest: XCTestCase {
             "-workspaces"
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.list(filter: .workspaces) == option)
+
+        XCTAssertEqual(option.action, Options.Action.list)
+        XCTAssertEqual(option.filter, Options.Filter.workspaces)
     }
 
     func testLisGone() throws {
@@ -74,7 +80,9 @@ final class OptionsTest: XCTestCase {
             "-gone"
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.list(filter: .gone) == option)
+
+        XCTAssertEqual(option.action, Options.Action.list)
+        XCTAssertEqual(option.filter, Options.Filter.gone)
     }
 
     func testListAll() throws {
@@ -84,6 +92,8 @@ final class OptionsTest: XCTestCase {
             "-all"
         ]
         let option = Options(from: args)
-        XCTAssertTrue(Options.list(filter: .all) == option)
+
+        XCTAssertEqual(option.action, Options.Action.list)
+        XCTAssertEqual(option.filter, Options.Filter.all)
     }
 }
