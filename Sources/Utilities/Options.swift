@@ -33,17 +33,17 @@ public struct Options: Equatable {
         // TODO: Make sure argument is valid
 
         // Assign default values
-        action = .clean
+        action = .list
         filter = .gone
 
         // Find subcommand, if there is one
         if args.count < 2 {
-            return
+            _printHelpMessage()
         }
         
         switch args[1] {
         case "clean":
-            filter = .gone
+            action = .clean
 
             // If have addition arguments
             if args.count > 2 {
@@ -61,11 +61,23 @@ public struct Options: Equatable {
             } else {
                 filter = .all
             }
-
+        case "-help":
+            _printHelpMessage()
+        case "-version":
+            _printVersion()
         default:
-            break
+            _printHelpMessage()
         }
 
+    }
+
+    fileprivate func _printHelpMessage() {
+        print("usage: vscode-cache [list|clean] [-all|-gone|-workspaces]")
+        exit(0)
+    }
+
+    fileprivate func _printVersion() {
+        print("0.0.1")
     }
 }
 
