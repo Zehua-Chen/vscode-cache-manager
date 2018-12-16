@@ -32,43 +32,39 @@ public struct Options: Equatable {
 
         // TODO: Make sure argument is valid
 
-        // Assign default values
+        // Default action to list
         action = .list
+        // Default filter to gone
         filter = .gone
 
         // Find subcommand, if there is one
+        // When there is no subcommand, print the helper message to help
+        // the user
         if args.count < 2 {
             _printHelpMessage()
         }
-        
-        switch args[1] {
-        case "clean":
-            action = .clean
 
-            // If have addition arguments
-            if args.count > 2 {
-                filter = args[2].makeFilter()
+        for arg in args[1...] {
+
+            // Parse options
+            if arg.starts(with: "-") {
+                filter = arg.makeFilter()
+            // Parse sub command
             } else {
-                filter = .gone
+
+                switch arg {
+                case "clean":
+                    action = .clean
+                case "list":
+                    action = .list
+                    // list's default filter is all
+                    filter = .all
+                default:
+                    _printHelpMessage()
+                }
 
             }
-        case "list":
-            action = .list
-
-            // If have addition arguments
-            if args.count > 2 {
-                filter = args[2].makeFilter()
-            } else {
-                filter = .all
-            }
-        case "-help":
-            _printHelpMessage()
-        case "-version":
-            _printVersion()
-        default:
-            _printHelpMessage()
         }
-
     }
 
     fileprivate func _printHelpMessage() {
@@ -78,6 +74,7 @@ public struct Options: Equatable {
 
     fileprivate func _printVersion() {
         print("0.0.1")
+        exit(0)
     }
 }
 
