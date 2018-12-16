@@ -75,23 +75,13 @@ public struct Options: Equatable, CustomStringConvertible {
 
             // Parse options
             if arg.starts(with: "-") {
-                filter = arg.makeFilter()
+                filter = arg.filter
             // Parse sub command
             } else {
+                action = arg.action
 
-                switch arg {
-                case "clean":
-                    action = .clean
-                case "list":
-                    action = .list
-                    // list's default filter is all
+                if case .list = action {
                     filter = .all
-                case "help":
-                    action = .help
-                case "version":
-                    action = .help
-                default:
-                    action = .help
                 }
 
             }
@@ -101,7 +91,7 @@ public struct Options: Equatable, CustomStringConvertible {
 
 fileprivate extension String {
 
-    func makeFilter() -> Options.Filter {
+    var filter: Options.Filter {
 
         switch self {
         case "-all":
@@ -112,6 +102,23 @@ fileprivate extension String {
             return .workspaces
         default:
             return .all
+        }
+
+    }
+
+    var action: Options.Action {
+
+        switch self {
+        case "clean":
+            return .clean
+        case "list":
+            return .list
+        case "help":
+            return .version
+        case "version":
+            return .version
+        default:
+            return .help
         }
 
     }
