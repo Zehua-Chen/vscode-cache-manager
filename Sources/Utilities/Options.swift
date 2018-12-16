@@ -1,17 +1,28 @@
+/// Command line options
 public enum Options: Equatable {
 
+    /// A filter used to indicate what type of cache to ignore from either
+    /// listing or cleaning
     public enum Filter {
+        /// All cache
         case all
+        /// Cache that does not exist on disks any more
         case gone
+        /// All workspace
         case workspaces
     }
     
     /// Global options, parsed from command line arguments
     public static let shared = Options(from: CommandLine.arguments)
 
+    /// Clean cache
     case clean(filter: Filter)
+    /// List cache
     case list(filter: Filter)
 
+    /// Parse options from the command line
+    ///
+    /// - Parameter args: command line arguments
     public init(from args: [String]) {
         // Assign default options
         self = .clean(filter: .gone)
