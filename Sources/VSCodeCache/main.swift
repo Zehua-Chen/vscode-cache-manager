@@ -3,4 +3,11 @@ import Dispatch
 
 let options = Options.shared
 
-print(options)
+switch options.action {
+case .help:
+    print(About.documentation)
+case .version:
+    print(About.version)
+default:
+    print(options)
+}

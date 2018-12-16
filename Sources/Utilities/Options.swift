@@ -1,11 +1,13 @@
 import Foundation
 
 /// Command line options
-public struct Options: Equatable {
+public struct Options: Equatable, CustomStringConvertible {
 
     public enum Action: Equatable {
         case clean
         case list
+        case help
+        case version
     }
 
     /// A filter used to indicate what type of cache to ignore from either
@@ -25,6 +27,30 @@ public struct Options: Equatable {
     public var action: Action
     public var filter: Filter
 
+    public var description: String {
+        var message = ""
+
+        switch action {
+        case .clean:
+            message += "clean "
+        case .list:
+            message += "list "
+        default:
+            break
+        }
+
+        switch filter {
+        case .all:
+            message += "-workspace"
+        case .gone:
+            message += "-gone"
+        case .workspaces:
+            message += "-workspaces"
+        }
+
+        return message
+    }
+
     /// Parse options from the command line
     ///
     /// - Parameter args: command line arguments
@@ -41,7 +67,8 @@ public struct Options: Equatable {
         // When there is no subcommand, print the helper message to help
         // the user
         if args.count < 2 {
-            _printHelpMessage()
+            action = .help
+            return
         }
 
         for arg in args[1...] {
@@ -59,22 +86,16 @@ public struct Options: Equatable {
                     action = .list
                     // list's default filter is all
                     filter = .all
+                case "help":
+                    action = .help
+                case "version":
+                    action = .help
                 default:
-                    _printHelpMessage()
+                    action = .help
                 }
 
             }
         }
-    }
-
-    fileprivate func _printHelpMessage() {
-        print("usage: vscode-cache [list|clean] [-all|-gone|-workspaces]")
-        exit(0)
-    }
-
-    fileprivate func _printVersion() {
-        print("0.0.1")
-        exit(0)
     }
 }
 
