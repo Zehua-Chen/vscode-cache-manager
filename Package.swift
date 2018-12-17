@@ -22,9 +22,15 @@ let package = Package(
             dependencies: ["Utilities"]),
         .target(
             name: "Utilities",
+            dependencies: ["VSCodeCache"]),
+        .target(
+            name: "VSCodeCache",
             dependencies: []),
         .testTarget(
             name: "UtilitiesTests",
-            dependencies: ["Utilities"]),
+            dependencies: ["Utilities", "VSCodeCache"]),
+        .testTarget(
+            name: "VSCodeCacheTests",
+            dependencies: ["VSCodeCache"])
     ]
 )

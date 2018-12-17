@@ -1,5 +1,6 @@
 import XCTest
-import struct Utilities.Options
+import Utilities
+import VSCodeCache
 
 final class OptionsTest: XCTestCase {
 
@@ -12,7 +13,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.clean)
-        XCTAssertEqual(option.filter, Options.Filter.gone)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.gone)
     }
 
     func testCleanGone() throws {
@@ -24,7 +25,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.clean)
-        XCTAssertEqual(option.filter, Options.Filter.gone)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.gone)
     }
 
     func testCleanWorkspaces() throws {
@@ -36,7 +37,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.clean)
-        XCTAssertEqual(option.filter, Options.Filter.workspaces)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.workspaces)
     }
 
     func testCleanAll() throws {
@@ -48,7 +49,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.clean)
-        XCTAssertEqual(option.filter, Options.Filter.all)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.all)
     }
 
     func testListShort() throws {
@@ -59,7 +60,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.list)
-        XCTAssertEqual(option.filter, Options.Filter.all)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.all)
     }
 
     func testListWorkspaces() throws {
@@ -71,7 +72,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.list)
-        XCTAssertEqual(option.filter, Options.Filter.workspaces)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.workspaces)
     }
 
     func testLisGone() throws {
@@ -83,7 +84,7 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.list)
-        XCTAssertEqual(option.filter, Options.Filter.gone)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.gone)
     }
 
     func testListAll() throws {
@@ -95,6 +96,6 @@ final class OptionsTest: XCTestCase {
         let option = Options(from: args)
 
         XCTAssertEqual(option.action, Options.Action.list)
-        XCTAssertEqual(option.filter, Options.Filter.all)
+        XCTAssertEqual(option.filter, VSCodeCacheFilter.all)
     }
 }

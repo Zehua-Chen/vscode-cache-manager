@@ -1,3 +1,5 @@
+import VSCodeCache
+
 /// Command line options
 public struct Options: Equatable, CustomStringConvertible {
 
@@ -36,35 +38,7 @@ public struct Options: Equatable, CustomStringConvertible {
         }
     }
 
-    /// A filter used to indicate what type of cache to ignore from either
-    /// the "action"
-    public enum Filter: Equatable, CustomStringConvertible {
-        /// All cache
-        ///
-        /// Command: `-all`
-        case all
-        /// Cache that does not exist on disks any more
-        ///
-        /// Command: `-gone`
-        case gone
-        /// All workspace
-        ///
-        /// Command: `-workspaces`
-        case workspaces
-
-        public var description: String {
-
-            switch self {
-            case .all:
-                return "-all"
-            case .gone:
-                return "-gone"
-            case .workspaces:
-                return "-workspaces"
-            }
-
-        }
-    }
+    
     
     /// Global options, parsed from command line arguments
     public static let shared = Options(from: CommandLine.arguments)
@@ -73,7 +47,7 @@ public struct Options: Equatable, CustomStringConvertible {
     public var action: Action
 
     /// Filter used to perform the action.
-    public var filter: Filter
+    public var filter: VSCodeCacheFilter
 
     public var description: String {
         return "\(action) \(filter)"
@@ -119,7 +93,7 @@ public struct Options: Equatable, CustomStringConvertible {
 
 fileprivate extension String {
 
-    var filter: Options.Filter {
+    var filter: VSCodeCacheFilter {
 
         switch self {
         case "-all":
