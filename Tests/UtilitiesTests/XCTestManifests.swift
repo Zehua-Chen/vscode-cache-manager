@@ -2,7 +2,6 @@ import XCTest
 
 extension OptionsTest {
     static let __allTests = [
-        ("test", test),
         ("testCleanAll", testCleanAll),
         ("testCleanGone", testCleanGone),
         ("testCleanShort", testCleanShort),

@@ -1,74 +1,152 @@
-public enum Options: Equatable {
+/// Command line options
+public struct Options: Equatable, CustomStringConvertible {
 
-    public enum Filter {
+    /// Action to perform on the cache.
+    public enum Action: Equatable, CustomStringConvertible {
+        /// Clean caches;
+        ///
+        /// Command: `clean`
+        case clean
+        /// List caches
+        ///
+        /// Command: `list`
+        case list
+        /// Print Help Info
+        ///
+        /// Command: `help`
+        case help
+        /// Print Version
+        ///
+        /// Command: `version`
+        case version
+
+        public var description: String {
+
+            switch self {
+            case .clean:
+                return "clean"
+            case .list:
+                return "list"
+            case .help:
+                return "help"
+            case .version:
+                return "version"
+            }
+
+        }
+    }
+
+    /// A filter used to indicate what type of cache to ignore from either
+    /// the "action"
+    public enum Filter: Equatable, CustomStringConvertible {
+        /// All cache
+        ///
+        /// Command: `-all`
         case all
+        /// Cache that does not exist on disks any more
+        ///
+        /// Command: `-gone`
         case gone
+        /// All workspace
+        ///
+        /// Command: `-workspaces`
         case workspaces
+
+        public var description: String {
+
+            switch self {
+            case .all:
+                return "-all"
+            case .gone:
+                return "-gone"
+            case .workspaces:
+                return "-workspaces"
+            }
+
+        }
     }
     
     /// Global options, parsed from command line arguments
     public static let shared = Options(from: CommandLine.arguments)
 
-    case clean(filter: Filter)
-    case list(filter: Filter)
+    /// Action perform.
+    public var action: Action
 
+    /// Filter used to perform the action.
+    public var filter: Filter
+
+    public var description: String {
+        return "\(action) \(filter)"
+    }
+
+    /// Parse options from the command line
+    ///
+    /// - Parameter args: command line arguments
     public init(from args: [String]) {
-        // Assign default options
-        self = .clean(filter: .gone)
+
+        // TODO: Make sure argument is valid
+
+        // Default action to list
+        action = .list
+        // Default filter to gone
+        filter = .gone
 
         // Find subcommand, if there is one
+        // When there is no subcommand, print the helper message to help
+        // the user
         if args.count < 2 {
+            action = .help
             return
         }
-        
-        switch args[1] {
+
+        for arg in args[1...] {
+
+            // Parse options
+            if arg.starts(with: "-") {
+                filter = arg.filter
+            // Parse sub command
+            } else {
+                action = arg.action
+
+                if case .list = action {
+                    filter = .all
+                }
+
+            }
+        }
+    }
+}
+
+fileprivate extension String {
+
+    var filter: Options.Filter {
+
+        switch self {
+        case "-all":
+            return .all
+        case "-gone":
+            return .gone
+        case "-workspaces":
+            return .workspaces
+        default:
+            return .all
+        }
+
+    }
+
+    var action: Options.Action {
+
+        switch self {
         case "clean":
-            // If have addition arguments
-            if args.count > 2 {
-                _handleClean(args: args[2...])
-            // otherwise defaults to gone
-            } else {
-                self = .clean(filter: .gone)
-            }
+            return .clean
         case "list":
-            if args.count > 2 {
-                _handleList(args: args[2...])
-            } else {
-                self = .list(filter: .all)
-            }
-
+            return .list
+        case "help":
+            return .version
+        case "version":
+            return .version
         default:
-            break
-        }
-
-    }
-
-    fileprivate mutating func _handleClean(args: ArraySlice<String>) {
-
-        switch args.first! {
-        case "-gone":
-            self = .clean(filter: .gone)
-        case "-all":
-            self = .clean(filter: .all)
-        case "-workspaces":
-            self = .clean(filter: .workspaces)
-        default:
-            self = .clean(filter: .gone)
-        }
-
-    }
-
-    fileprivate mutating func _handleList(args: ArraySlice<String>) {
-
-        switch args.first! {
-        case "-gone":
-            self = .list(filter: .gone)
-        case "-all":
-            self = .list(filter: .all)
-        case "-workspaces":
-            self = .list(filter: .workspaces)
-        default:
-            self = .list(filter: .all)
+            return .help
         }
 
     }
