@@ -1,9 +1,10 @@
 import XCTest
-import Utilities
+import struct Utilities.Options
 
 final class OptionsTest: XCTestCase {
 
     func testCleanShort() throws {
+
         let args = [
             "vscode-cache",
             "clean",
