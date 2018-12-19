@@ -43,8 +43,7 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
             let storagePath = "\(path)/workspaceStorage"
             let folders = try manager
                 .contentsOfDirectory(atPath: storagePath)
-                .filter{ return $0 != ".DS_Store" }
-                .map{ return "\(storagePath)/\($0)" }
+                .resolve(to: storagePath)
 
             return _inspect(folders: folders, using: manager)
         } catch {
@@ -95,4 +94,26 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
         return caches
     }
+}
+
+fileprivate extension Array where Element == String {
+
+    func resolve(to parent: String) -> [String] {
+
+        var temp = [String]()
+        temp.reserveCapacity(self.count)
+
+        for folder in self {
+            #if os(macOS)
+            if folder == ".DS_Store" {
+                continue
+            }
+            #endif
+
+            temp.append("\(parent)/\(folder)")
+        }
+
+        return temp
+    }
+
 }
