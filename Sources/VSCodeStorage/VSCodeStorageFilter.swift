@@ -6,7 +6,7 @@
 //
 /// A filter used to indicate what type of cache to ignore from either
 /// the "action"
-public enum VSCodeCacheFilter: Equatable, CustomStringConvertible {
+public enum VSCodeStorageFilter: Equatable, CustomStringConvertible {
     /// All cache
     ///
     /// Command: `-all`

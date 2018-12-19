@@ -53,6 +53,13 @@ public enum VSCodeStorage: CustomStringConvertible {
 
     }
 
+    public static func remove(
+        in path: String = FileManager.vscodeCachePath,
+        filter: VSCodeStorageFilter = VSCodeStorageFilter.gone) {
+        
+        let storages = VSCodeStorage.find(in: path)
+    }
+
     fileprivate static func _inspect(
         folders: [String],
         using manager: FileManager) -> [VSCodeStorage] {
@@ -84,7 +91,7 @@ public enum VSCodeStorage: CustomStringConvertible {
                         .workspace(
                             path: folder,
                             workspacePath: workspacePath))
-                    
+
                     continue
                 }
 

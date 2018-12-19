@@ -47,7 +47,7 @@ public struct Options: Equatable, CustomStringConvertible {
     public var action: Action
 
     /// Filter used to perform the action.
-    public var filter: VSCodeCacheFilter
+    public var filter: VSCodeStorageFilter
 
     public var description: String {
         return "\(action) \(filter)"
@@ -93,7 +93,7 @@ public struct Options: Equatable, CustomStringConvertible {
 
 fileprivate extension String {
 
-    var filter: VSCodeCacheFilter {
+    var filter: VSCodeStorageFilter {
 
         switch self {
         case "-all":
