@@ -10,7 +10,7 @@ public extension FileManager {
 
     public class var vscodeCachePath: String {
         #if os(macOS)
-        return "/Users/\(NSUserName())/Library/Application Support/Code/User/workspaceStorage"
+        return "/Users/\(NSUserName())/Library/Application Support/Code/User"
         #elseif os(Linux)
         return "?"
         #endif
