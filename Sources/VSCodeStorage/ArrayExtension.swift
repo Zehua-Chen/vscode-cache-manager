@@ -24,7 +24,7 @@ public extension Array where Element == VSCodeStorage {
     fileprivate func _pick(
         workspaces storages: [VSCodeStorage]) -> [VSCodeStorage] {
 
-        var temp = Array<VSCodeStorage>()
+        var temp = [VSCodeStorage]()
         temp.reserveCapacity(storages.count)
 
         for storage in storages {
@@ -44,7 +44,7 @@ public extension Array where Element == VSCodeStorage {
     fileprivate func _pick(
         gone storages: [VSCodeStorage]) -> [VSCodeStorage] {
 
-        var temp = Array<VSCodeStorage>()
+        var temp = [VSCodeStorage]()
         temp.reserveCapacity(storages.count)
         let manager = FileManager.default
 

@@ -2,7 +2,7 @@ import XCTest
 import Foundation
 import VSCodeStorage
 
-final class ArrayExtension: XCTestCase {
+final class ArrayExtensionTest: XCTestCase {
 
     func testAll() {
         let storages = [
