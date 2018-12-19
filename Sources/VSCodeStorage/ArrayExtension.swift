@@ -38,7 +38,7 @@ public extension Array where Element == VSCodeStorage {
 
         }
 
-        return storages
+        return temp
     }
 
     fileprivate func _pick(

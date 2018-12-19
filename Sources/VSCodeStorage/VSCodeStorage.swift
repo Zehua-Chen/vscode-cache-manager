@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public enum VSCodeStorage: CustomStringConvertible {
+public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
     fileprivate struct _Workspace: Decodable {
         var folder: String?
