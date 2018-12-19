@@ -1,4 +1,5 @@
 import Utilities
+import VSCodeCache
 
 let options = Options.shared
 
@@ -8,5 +9,5 @@ case .help:
 case .version:
     print(About.version)
 default:
-    print(options)
+    let caches = VSCodeCache.findCaches()
 }
