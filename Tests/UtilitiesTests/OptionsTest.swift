@@ -1,6 +1,6 @@
 import XCTest
 import Utilities
-import VSCodeCache
+import VSCodeStorage
 
 final class OptionsTest: XCTestCase {
 

@@ -12,8 +12,7 @@ public enum VSCodeCache {
     case other(path: String)
 
     public static func findCaches(
-        in path: String = FileManager.vscodeCachePath,
-        filter: VSCodeCacheFilter = .all) -> [VSCodeCache] {
+        in path: String = FileManager.vscodeCachePath) -> [VSCodeCache] {
 
         let manager = FileManager.default
 

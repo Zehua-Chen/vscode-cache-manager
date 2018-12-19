@@ -1,5 +1,5 @@
 import Utilities
-import VSCodeCache
+import VSCodeStorage
 
 let options = Options.shared
 

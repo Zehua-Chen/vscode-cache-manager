@@ -1,4 +1,4 @@
-import VSCodeCache
+import VSCodeStorage
 
 /// Command line options
 public struct Options: Equatable, CustomStringConvertible {
