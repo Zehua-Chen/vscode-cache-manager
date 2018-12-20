@@ -41,9 +41,8 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
         do {
             let storagePath = "\(path)/workspaceStorage"
-            let folders = try manager
-                .contentsOfDirectory(atPath: storagePath)
-                .resolve(to: storagePath)
+            var folders = try manager.contentsOfDirectory(atPath: storagePath)
+            folders.formResolve(to: storagePath)
 
             return _inspect(folders: folders, using: manager)
         } catch {
@@ -60,6 +59,10 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
         let decoder = JSONDecoder()
 
         for folder in folders {
+
+            if folder.isEmpty {
+                continue
+            }
             
             let workspaceFile = folder.with(path: _workspaceFileName)
 
@@ -98,22 +101,19 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
 fileprivate extension Array where Element == String {
 
-    func resolve(to parent: String) -> [String] {
+    mutating func formResolve(to parent: String) {
 
-        var temp = [String]()
-        temp.reserveCapacity(self.count)
+        for i in 0..<self.count {
 
-        for folder in self {
-            #if os(macOS)
-            if folder == ".DS_Store" {
+            if self[i] == ".DS_Store" {
+                self[i].removeAll()
                 continue
             }
-            #endif
 
-            temp.append(parent.with(path: folder))
+            self[i] = parent.with(path: self[i])
+
         }
 
-        return temp
     }
 
 }
