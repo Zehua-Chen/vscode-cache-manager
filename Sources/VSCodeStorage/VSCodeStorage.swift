@@ -6,14 +6,23 @@
 //
 import Foundation
 
+/// A vscode storage is defined as a folder that stores data used
+/// by vscode or its plugins while editing a specific workspace/folder.
 public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
+    /// Representation of the json file "workspace.json"
     fileprivate struct _Workspace: Decodable {
+        /// "folder" where the edited folder is
         var folder: String?
+        /// "configuration": where the edited folder is
         var configuration: String?
+        /// The name by which the json file is stored
+        static let fileName = "workspace.json"
     }
-    
+    /// Workspace, both folder and workspace storage are considered to be
+    /// workspace storage as they are similar.
     case workspace(path: String, workspacePath: String)
+    /// Unrecognized storage
     case other(path: String)
 
     public var description: String {
@@ -26,8 +35,6 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
         }
 
     }
-
-    fileprivate static let _workspaceFileName = "workspace.json"
 
     /// Find Visual Studio Code' code storage
     ///
@@ -42,7 +49,7 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
         do {
             let storagePath = "\(path)/workspaceStorage"
             var folders = try manager.contentsOfDirectory(atPath: storagePath)
-            folders.formResolve(to: storagePath)
+            folders.resolveAll(to: storagePath)
 
             return _inspect(folders: folders, using: manager)
         } catch {
@@ -51,6 +58,12 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
     }
 
+    /// Go over vs code storages
+    ///
+    /// - Parameters:
+    ///   - folders: a list of folders to go over
+    ///   - manager: file manager used to go over the folders
+    /// - Returns: A list of VSCodeStorage describing the folders
     fileprivate static func _inspect(
         folders: [String],
         using manager: FileManager) -> [VSCodeStorage] {
@@ -59,12 +72,12 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
         let decoder = JSONDecoder()
 
         for folder in folders {
-
+            // During folders.resolveAll, all nonfolders are cleared
             if folder.isEmpty {
                 continue
             }
             
-            let workspaceFile = folder.with(path: _workspaceFileName)
+            let workspaceFile = folder.with(path: _Workspace.fileName)
 
             if manager.fileExists(atPath: workspaceFile) {
 
@@ -101,7 +114,10 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
 
 fileprivate extension Array where Element == String {
 
-    mutating func formResolve(to parent: String) {
+    /// Resolve all relative path names to a parent path name
+    ///
+    /// - Parameter parent: the parent path name
+    mutating func resolveAll(to parent: String) {
 
         for i in 0..<self.count {
 

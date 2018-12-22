@@ -8,26 +8,31 @@ import Foundation
 
 public extension Array where Element == VSCodeStorage {
 
+    /// Filter the array of vs code storage and returns a new array of filtered
+    /// items
+    ///
+    /// - Parameter filter: the filter to apply
+    /// - Returns: the filtered arrays
     func filter(using filter: VSCodeStorageFilter) -> [VSCodeStorage] {
 
         switch filter {
         case .all:
             return self
         case .workspaces:
-            return _pick(workspaces: self)
+            return self.workspaces
         case .gone:
-            return _pick(gone: self)
+            return self.gone
         }
 
     }
 
-    fileprivate func _pick(
-        workspaces storages: [VSCodeStorage]) -> [VSCodeStorage] {
+    /// A list of workspaces
+    var workspaces: [VSCodeStorage] {
 
         var temp = [VSCodeStorage]()
-        temp.reserveCapacity(storages.count)
+        temp.reserveCapacity(self.count)
 
-        for storage in storages {
+        for storage in self {
 
             switch storage {
             case .workspace(_, _):
@@ -41,14 +46,14 @@ public extension Array where Element == VSCodeStorage {
         return temp
     }
 
-    fileprivate func _pick(
-        gone storages: [VSCodeStorage]) -> [VSCodeStorage] {
+    /// A list of storages that are considered to be gone
+    var gone: [VSCodeStorage] {
 
         var temp = [VSCodeStorage]()
-        temp.reserveCapacity(storages.count)
+        temp.reserveCapacity(self.count)
         let manager = FileManager.default
 
-        for storage in storages {
+        for storage in self {
 
             switch storage {
             case .workspace(_, let workspacePath):
