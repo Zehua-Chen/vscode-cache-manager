@@ -32,8 +32,5 @@ let package = Package(
         .testTarget(
             name: "UtilitiesTests",
             dependencies: ["Utilities", "VSCodeStorage"]),
-        .testTarget(
-            name: "VSCodeStorageTests",
-            dependencies: ["VSCodeStorage"])
     ]
 )
