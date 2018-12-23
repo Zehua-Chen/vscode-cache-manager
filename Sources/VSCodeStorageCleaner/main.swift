@@ -9,21 +9,6 @@ import Utilities
 import VSCodeStorage
 import Foundation
 
-internal func print(storages: [VSCodeStorage]) {
-
-    for storage in storages {
-
-        switch storage {
-        case .workspace(_, let workspacePath):
-            print(workspacePath.baseName)
-        case .other(let path):
-            print(path.baseName)
-        }
-
-    }
-
-}
-
 internal func remove(storages: [VSCodeStorage]) {
 
     print("The following storage will be removed")
