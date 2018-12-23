@@ -8,7 +8,10 @@ let package = Package(
     products: [
         .executable(
             name:"vscode-storage",
-            targets: ["VSCodeStorageCleaner"])
+            targets: ["VSCodeStorageCleaner"]),
+        .library(
+            name: "VSCodeStorage",
+            targets: ["VSCodeStorage"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
