@@ -15,9 +15,9 @@ internal func print(storages: [VSCodeStorage]) {
 
         switch storage {
         case .workspace(_, let workspacePath):
-            print(workspacePath)
+            print(workspacePath.baseName)
         case .other(let path):
-            print(path)
+            print(path.baseName)
         }
 
     }
