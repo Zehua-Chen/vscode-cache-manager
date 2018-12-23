@@ -24,6 +24,8 @@ internal func remove(storages: [VSCodeStorage]) {
         input = "Y"
     }
 
+    guard input != "Y" else { return }
+
     let manager = FileManager.default
 
     for storage in storages {
@@ -47,7 +49,11 @@ let options = Options.shared
 
 switch options.action {
 case .clean:
-    remove(storages: VSCodeStorage.find().filter(using: options.filter))
+    let storages = VSCodeStorage.find().filter(using: options.filter)
+
+    if !storages.isEmpty {
+        remove(storages: storages)
+    }
 case .list:
     print(storages: VSCodeStorage.find().filter(using: options.filter))
 case .help:
