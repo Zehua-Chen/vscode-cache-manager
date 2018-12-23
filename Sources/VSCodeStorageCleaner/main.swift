@@ -9,21 +9,9 @@ import Utilities
 import VSCodeStorage
 import Foundation
 
-internal func print(storages: [VSCodeStorage]) {
-
-    for storage in storages {
-
-        switch storage {
-        case .workspace(_, let workspacePath):
-            print(workspacePath)
-        case .other(let path):
-            print(path)
-        }
-
-    }
-
-}
-
+/// Remove a list of storages
+///
+/// - Parameter storages: the storages to remove
 internal func remove(storages: [VSCodeStorage]) {
 
     print("The following storage will be removed")
@@ -35,6 +23,8 @@ internal func remove(storages: [VSCodeStorage]) {
     if input.isEmpty {
         input = "Y"
     }
+
+    guard input != "Y" else { return }
 
     let manager = FileManager.default
 
@@ -59,7 +49,11 @@ let options = Options.shared
 
 switch options.action {
 case .clean:
-    remove(storages: VSCodeStorage.find().filter(using: options.filter))
+    let storages = VSCodeStorage.find().filter(using: options.filter)
+
+    if !storages.isEmpty {
+        remove(storages: storages)
+    }
 case .list:
     print(storages: VSCodeStorage.find().filter(using: options.filter))
 case .help:
