@@ -1,75 +1,55 @@
-public enum Options: Equatable {
+import VSCodeStorage
 
-    public enum Filter {
-        case all
-        case gone
-        case workspaces
-    }
-    
+/// Command line options
+public struct Options: Equatable, CustomStringConvertible {
+
     /// Global options, parsed from command line arguments
     public static let shared = Options(from: CommandLine.arguments)
 
-    case clean(filter: Filter)
-    case list(filter: Filter)
+    /// Action perform.
+    public var action: Action
 
+    /// Filter used to perform the action.
+    public var filter: Filter
+
+    public var description: String {
+        return "\(action) \(filter)"
+    }
+
+    /// Parse options from the command line
+    ///
+    /// - Parameter args: command line arguments
     public init(from args: [String]) {
-        // Assign default options
-        self = .clean(filter: .gone)
+
+        // TODO: Make sure argument is valid
+
+        // Default action to list
+        action = .list
+        // Default filter to gone
+        filter = .gone
 
         // Find subcommand, if there is one
+        // When there is no subcommand, print the helper message to help
+        // the user
         if args.count < 2 {
+            action = .help
             return
         }
-        
-        switch args[1] {
-        case "clean":
-            // If have addition arguments
-            if args.count > 2 {
-                _handleClean(args: args[2...])
-            // otherwise defaults to gone
+
+        for arg in args[1...] {
+
+            // Parse options
+            if arg.starts(with: "-") {
+                filter = arg.filter
+            // Parse sub command
             } else {
-                self = .clean(filter: .gone)
+                action = arg.action
+
+                if case .list = action {
+                    filter = .all
+                }
+
             }
-        case "list":
-            if args.count > 2 {
-                _handleList(args: args[2...])
-            } else {
-                self = .list(filter: .all)
-            }
-
-        default:
-            break
         }
-
-    }
-
-    fileprivate mutating func _handleClean(args: ArraySlice<String>) {
-
-        switch args.first! {
-        case "-gone":
-            self = .clean(filter: .gone)
-        case "-all":
-            self = .clean(filter: .all)
-        case "-workspaces":
-            self = .clean(filter: .workspaces)
-        default:
-            self = .clean(filter: .gone)
-        }
-
-    }
-
-    fileprivate mutating func _handleList(args: ArraySlice<String>) {
-
-        switch args.first! {
-        case "-gone":
-            self = .list(filter: .gone)
-        case "-all":
-            self = .list(filter: .all)
-        case "-workspaces":
-            self = .list(filter: .workspaces)
-        default:
-            self = .list(filter: .all)
-        }
-
     }
 }
