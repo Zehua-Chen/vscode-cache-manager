@@ -44,14 +44,14 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
     public static func find(
         in path: String = FileManager.vscodeCachePath) -> [VSCodeStorage] {
 
-        let manager = FileManager.default
-
         do {
             let storagePath = "\(path)/workspaceStorage"
+            let manager = FileManager.default
             var folders = try manager.contentsOfDirectory(atPath: storagePath)
+            
             folders.resolveAll(to: storagePath)
 
-            return _inspect(folders: folders, using: manager)
+            return _inspect(folders: folders)
         } catch {
             return []
         }
@@ -64,12 +64,11 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
     ///   - folders: a list of folders to go over
     ///   - manager: file manager used to go over the folders
     /// - Returns: A list of VSCodeStorage describing the folders
-    fileprivate static func _inspect(
-        folders: [String],
-        using manager: FileManager) -> [VSCodeStorage] {
+    fileprivate static func _inspect(folders: [String]) -> [VSCodeStorage] {
 
         var caches = [VSCodeStorage]()
         let decoder = JSONDecoder()
+        let manager = FileManager.default
 
         for folder in folders {
             // During folders.resolveAll, all nonfolders are cleared
