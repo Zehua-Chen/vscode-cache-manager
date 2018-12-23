@@ -9,6 +9,9 @@ import Utilities
 import VSCodeStorage
 import Foundation
 
+/// Remove a list of storages
+///
+/// - Parameter storages: the storages to remove
 internal func remove(storages: [VSCodeStorage]) {
 
     print("The following storage will be removed")

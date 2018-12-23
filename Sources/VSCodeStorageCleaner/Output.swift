@@ -7,6 +7,9 @@
 
 import VSCodeStorage
 
+/// Print storages to std out
+///
+/// - Parameter storages: the storages to print
 internal func print(storages: [VSCodeStorage]) {
 
     for storage in storages {
@@ -22,8 +25,4 @@ internal func print(storages: [VSCodeStorage]) {
 
     }
 
-}
-
-internal func print(storages: [VSCodeStorage], header: String) {
-    
 }
