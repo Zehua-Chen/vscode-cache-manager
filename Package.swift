@@ -4,11 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "VSCodeCache",
+    name: "VSCodeStorage",
     products: [
         .executable(
-            name:"vscode-cache",
-            targets: ["VSCodeCacheCleaner"])
+            name:"vscode-storage",
+            targets: ["VSCodeStorageCleaner"]),
+        .library(
+            name: "VSCodeStorage",
+            targets: ["VSCodeStorage"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -18,13 +21,19 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "VSCodeCacheCleaner",
+            name: "VSCodeStorageCleaner",
             dependencies: ["Utilities"]),
         .target(
             name: "Utilities",
+            dependencies: ["VSCodeStorage"]),
+        .target(
+            name: "VSCodeStorage",
             dependencies: []),
         .testTarget(
             name: "UtilitiesTests",
-            dependencies: ["Utilities"]),
+            dependencies: ["Utilities", "VSCodeStorage"]),
+        .testTarget(
+            name: "VSCodeStorageTests",
+            dependencies: ["VSCodeStorage"])
     ]
 )
