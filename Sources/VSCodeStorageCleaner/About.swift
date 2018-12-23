@@ -24,7 +24,7 @@ struct Version: CustomStringConvertible {
 struct About {
 
     /// Version number
-    public static let version = Version(major: 0, minor: 0, patch: 0)
+    public static let version = Version(major: 0, minor: 1, patch: 0)
 
     /// Documentation
     public static let documentation = """
