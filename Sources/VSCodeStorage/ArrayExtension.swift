@@ -8,24 +8,6 @@ import Foundation
 
 public extension Array where Element == VSCodeStorage {
 
-    /// Filter the array of vs code storage and returns a new array of filtered
-    /// items
-    ///
-    /// - Parameter filter: the filter to apply
-    /// - Returns: the filtered arrays
-    func filter(using filter: VSCodeStorageFilter) -> [VSCodeStorage] {
-
-        switch filter {
-        case .all:
-            return self
-        case .workspaces:
-            return self.workspaces
-        case .gone:
-            return self.gone
-        }
-
-    }
-
     /// A list of workspaces
     var workspaces: [VSCodeStorage] {
 

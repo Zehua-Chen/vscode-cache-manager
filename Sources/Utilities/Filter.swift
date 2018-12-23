@@ -6,7 +6,7 @@
 //
 /// A filter used to indicate what type of cache to ignore from either
 /// the "action"
-public enum VSCodeStorageFilter: Equatable, CustomStringConvertible {
+public enum Filter: Equatable, CustomStringConvertible {
     /// All cache
     ///
     /// Command: `-all`
@@ -32,4 +32,24 @@ public enum VSCodeStorageFilter: Equatable, CustomStringConvertible {
         }
 
     }
+}
+
+internal extension String {
+
+    /// Convert a string to a filter
+    var filter: Filter {
+
+        switch self {
+        case "-all":
+            return .all
+        case "-gone":
+            return .gone
+        case "-workspaces":
+            return .workspaces
+        default:
+            return .all
+        }
+
+    }
+
 }
