@@ -51,7 +51,7 @@ internal extension String {
         case "list":
             return .list
         case "help":
-            return .version
+            return .help
         case "version":
             return .version
         default:

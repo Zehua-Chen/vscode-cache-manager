@@ -95,6 +95,14 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
                         workspacePath = workspace.configuration!
                     }
 
+                    // Get rid of redundant "file://"
+                    if workspacePath.starts(with: "file://") {
+                        let startIndex = workspacePath.startIndex
+                        let endIndex = workspacePath.index(
+                            startIndex, offsetBy: 6)
+                        workspacePath.removeSubrange(startIndex...endIndex)
+                    }
+
                     caches.append(
                         .workspace(
                             path: folder,
