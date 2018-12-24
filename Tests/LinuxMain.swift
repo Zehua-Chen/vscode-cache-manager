@@ -1,8 +1,10 @@
 import XCTest
 
-import UtilitiesTest
+import UtilitiesTests
+import VSCodeStorageTests
 
 var tests = [XCTestCaseEntry]()
-tests += UtilitiesTest.__allTests()
+tests += UtilitiesTests.__allTests()
+tests += VSCodeStorageTests.__allTests()
 
 XCTMain(tests)

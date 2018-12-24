@@ -6,6 +6,7 @@ extension OptionsTest {
         ("testCleanGone", testCleanGone),
         ("testCleanShort", testCleanShort),
         ("testCleanWorkspaces", testCleanWorkspaces),
+        ("testLisGone", testLisGone),
         ("testListAll", testListAll),
         ("testListShort", testListShort),
         ("testListWorkspaces", testListWorkspaces),
