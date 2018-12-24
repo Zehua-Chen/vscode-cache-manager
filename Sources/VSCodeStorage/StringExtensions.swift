@@ -10,10 +10,10 @@ internal extension String {
     /// Append a path to a string
     ///
     /// Rules
-    /// * `usr/ + lib = usr/lib`
-    /// * `usr/ + /lib = usr/lib`
-    /// * `usr + /lib = usr/lib`
-    /// * `usr + lib = usr/lib`
+    /// * `/usr/ + lib = /usr/lib`
+    /// * `/usr/ + /lib = /usr/lib`
+    /// * `/usr + /lib = /usr/lib`
+    /// * `/usr + lib = /usr/lib`
     /// - Parameter path: the path to append
     mutating func append(path: String) {
 
@@ -61,8 +61,9 @@ internal extension String {
     ///
     /// - Parameter path: the path to append
     /// - Returns: the new string
-    func with(path: String) -> String {
+    func appended(path: String) -> String {
         var temp = self
+        temp.reserveCapacity(self.count + path.count)
         temp.append(path: path)
 
         return temp

@@ -76,7 +76,7 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
                 continue
             }
             
-            let workspaceFile = folder.with(path: _Workspace.fileName)
+            let workspaceFile = folder.appended(path: _Workspace.fileName)
 
             if manager.fileExists(atPath: workspaceFile) {
 
@@ -136,7 +136,7 @@ fileprivate extension Array where Element == String {
                 continue
             }
 
-            self[i] = parent.with(path: self[i])
+            self[i] = parent.appended(path: self[i])
 
         }
 
