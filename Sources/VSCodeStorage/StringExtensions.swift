@@ -67,4 +67,27 @@ internal extension String {
 
         return temp
     }
+
+    // Remove splace placeholders
+    mutating func removeSpacePlaceholders() {
+        let startIndex = self.startIndex
+        var currentIndex = self.endIndex
+
+        while currentIndex > startIndex {
+            self.formIndex(before: &currentIndex)
+
+            if self[currentIndex] == "%" {
+                let spacePlaceholderEnd = self.index(currentIndex, offsetBy: 2)
+
+                if self[currentIndex...spacePlaceholderEnd] == "%20" {
+                    self.replaceSubrange(
+                        currentIndex...spacePlaceholderEnd,
+                        with: " ")
+                }
+
+            }
+
+        }
+
+    }
 }

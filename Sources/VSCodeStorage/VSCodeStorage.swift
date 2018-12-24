@@ -102,6 +102,9 @@ public enum VSCodeStorage: Equatable, CustomStringConvertible {
                         workspacePath.removeSubrange(startIndex...endIndex)
                     }
 
+                    // Remove all %20, which is used to represent spaces
+                    workspacePath.removeSpacePlaceholders()
+
                     caches.append(
                         .workspace(
                             path: folder,
